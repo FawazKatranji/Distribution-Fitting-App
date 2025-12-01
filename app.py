@@ -1,5 +1,8 @@
 
+#Bt: Fawaz
+
 #This project have been uploaded onto github through the following repository https://github.com/FawazKatranji/Distribution-Fitting-App
+#The project have been uploaded onto streamlit on this link https://distribution-fitting-app-fawaz-katranji.streamlit.app
 
 import streamlit as st
 import numpy as np

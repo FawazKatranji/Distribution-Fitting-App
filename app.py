@@ -2,7 +2,7 @@
 #Bt: Fawaz
 
 #This project have been uploaded onto github through the following repository https://github.com/FawazKatranji/Distribution-Fitting-App
-#The project have been uploaded onto streamlit on this link https://distribution-fitting-app-fawaz-katranji.streamlit.app
+#The project have been uploaded onto streamlit on this link https://github.com/FawazKatranji/Distribution-Fitting-App
 
 import streamlit as st
 import numpy as np
@@ -15,7 +15,7 @@ import pandas as pd
 
 #Setting the title 
 st.set_page_config(page_title="Distribution Fitting App")
-st.title("Distribution Fitting App (NE111 Final Project)")
+st.title("Distribution Fitting App (NE111 Final Project by Fawaz)")
 st.write("Analyze your dataset and visualize fitted probability distributions.\n")
 
 # TABS
@@ -123,7 +123,7 @@ with tab_fit:
             # Histogram
             ax.hist(data, bins=20, density=True, alpha=0.5, label="Data")
 
-            # PDF
+            # PDF curve
             x = np.linspace(min(data), max(data), 500)
             pdf = dist.pdf(x, *params)
             ax.plot(x, pdf, linewidth=2, label=f"{dist_name} Fit")
@@ -131,13 +131,28 @@ with tab_fit:
             ax.legend()
             st.pyplot(fig)
 
-            # MSE
+            # ===============================
+            #          ERROR METRICS
+            # ===============================
+
+            # Histogram points for comparison
             hist_vals, hist_edges = np.histogram(data, bins=20, density=True)
             hist_centers = 0.5 * (hist_edges[:-1] + hist_edges[1:])
             pdf_hist = dist.pdf(hist_centers, *params)
-            mse = np.mean((hist_vals - pdf_hist)**2)
 
-            st.metric("Fit Error (MSE)", round(mse, 6))
+            # Errors
+            mse = np.mean((hist_vals - pdf_hist) ** 2)
+            mae = np.mean(np.abs(hist_vals - pdf_hist))
+            max_error = np.max(np.abs(hist_vals - pdf_hist))
+
+            # Display metrics
+            st.markdown("### Fit Error Metrics")
+            colA, colB, colC = st.columns(3)
+
+            colA.metric("MSE", f"{mse:.6f}")
+            colB.metric("MAE", f"{mae:.6f}")
+            colC.metric("Max Error", f"{max_error:.6f}")
+
 
         st.markdown("---")
 
